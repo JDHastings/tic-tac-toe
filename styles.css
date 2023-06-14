@@ -10,12 +10,12 @@ body {
     grid-template: 100px 1fr 50px / 1fr;
     align-items: center;
     justify-items: center;
+    background-color: lightgrey;
 }
 
 .game-board {
     width: 500px;
     height: 500px;
-    border: 1px solid black;
     border-radius: 10px;
     background-color: grey;
     display: grid;
@@ -25,7 +25,6 @@ body {
 
 .board-piece {
     background-color: white;
-    border-radius: 10px;
     display: grid;
     grid-template: 1fr / 1fr;
     justify-items: center;
