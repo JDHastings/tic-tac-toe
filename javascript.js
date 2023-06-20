@@ -7,6 +7,8 @@
         },
         cacheDom: function(){
             this.pieces = document.querySelectorAll('.board-piece');
+            this.mainContent = document.querySelector('.main-content');
+            this.winMessage = document.querySelector('.win-message');
         },
         draw: function(){
             const gameBoard = document.querySelector('.game-board');
@@ -24,6 +26,9 @@
                 markerCount = this.placeMarker(piece, markerCount);
                 if(markerCount > 5){
                     this.checkWin();
+                    if(markerCount > 9 && this.winMessage == null){
+                        this.displayWin('The Cat');
+                    }
                 }
             }));
         },
@@ -35,10 +40,13 @@
                     x.classList.add('x');
                 }else{
                     x.src = './images/o.png';
-                    x.classList.add('o');
+                    //x.classList.add('o');
                 }
                 piece.append(x);
                 markerCount++;
+                if(markerCount == 2){
+                    this.removeWin();
+                }
             }
             return markerCount;
         },
@@ -69,11 +77,9 @@
                     }
                 }
                 if(count == 3){
-                    console.log('x wins horizontal');
-                    this.reset();
+                    this.displayWin('X');
                 }else if(count == -3){
-                    console.log('o wins horizontal');
-                    this.reset();
+                    this.displayWin('O');
                 }
             }
             // check win vertical
@@ -87,11 +93,9 @@
                     }
                 }
                 if(count == 3){
-                    console.log('x wins vertical');
-                    this.reset();
+                    this.displayWin('X');
                 }else if(count == -3){
-                    console.log('o wins vertical');
-                    this.reset();
+                    this.displayWin('O');
                 }
             }
             // check win diagonal
@@ -125,15 +129,29 @@
                 dCount2--;
             }
             if(dCount1 == 3 || dCount2 == 3){
-                console.log('x wins diagonal');
-                this.reset();
+                this.displayWin('X');
             }else if(dCount1 == -3 || dCount2 == -3){
-                console.log('o wins diagonal');
-                this.reset();
+                this.displayWin('O');
             }
         },
         reset: function(){
-            console.log('resetting board...');
+            this.pieces.forEach(piece => {
+                piece.remove(piece.firstChild);
+            });
+            this.init();
+        },
+        displayWin: function(winner){
+            const message = document.createElement('h1');
+            message.textContent = winner + ' Wins!';
+            message.classList.add('win-message');
+            this.mainContent.append(message);
+            this.reset();
+        },
+        removeWin: function(){
+            if(this.winMessage){
+                this.winMessage.remove();
+                this.cacheDom();
+            }
         }
     };
     board.init();
